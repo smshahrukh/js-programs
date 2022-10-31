@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Problems</title>
+</head>
+
+<body>
+
+    <h3>Q1 Count Frequency</h2>
+        <p>Input: ['a', 'c', 'a', 'b', 'c']</p>
+        <p id="output1"></p>
+
+    <h3>Q2 Remove duplicate words</h2>
+        <p>Input: The world is the best world of the world</p>
+        <p id="output2"></p>
+
+    <h3>Q3 Sum of digits of an integer</h2>
+        <p>Input: a = 165</p>
+        <p id="output3"></p>
+        
+    <h3>Q4 Recursive Traverse</h2>
+    <p>To find all occurrences of the given key in the JSON object and output array of its values in the object</p>
+    <p id="output4"></p>
+
+    <script>
+
+        function CountFrequency(input = []) {
+            let output = {};
+
+            input.forEach((value, index) => {
+                const keys = Object.keys(output);
+                if (!keys.includes(value)) {
+                    output = {
+                        ...output,
+                        [value]: 1
+                    }
+                } else {
+                    output = {
+                        ...output,
+                        [value]: output[value] + 1
+                    }
+                }
+            })
+
+            console.log("Output: ", output)
+            document.getElementById("output1").innerHTML = JSON.stringify(output);
+        }
+
+        CountFrequency(['a', 'c', 'a', 'b', 'c'])
+
+
+        function removeDuplicateWords(input) {
+            const words = input.toLowerCase().split(" ")
+            // words.forEach((value, index) => {
+            //     const lowerCaseValue = value.toLowerCase()
+            //     if (!outputString.includes(lowerCaseValue)) {
+            //         outputString = `${outputString} ${lowerCaseValue}`
+            //     }
+            // })
+
+            const set = new Set(words)
+            const outputString = [...set].join(' ')
+            console.log(outputString)
+            document.getElementById("output2").innerHTML = outputString;
+        }
+
+        removeDuplicateWords("The world is the best world of the world")
+
+        function sumOfDigits(input) {
+
+            let rem = 0; let sum = 0;
+            while (input) {
+                rem = input % 10;
+                sum = sum + rem;
+                input = Math.floor(input / 10)
+            }
+
+            console.log("sum: ", sum)
+            document.getElementById("output3").innerHTML = sum;
+        }
+
+        sumOfDigits(165)
+
+        const isObject = (val) => typeof val === 'object' &&
+            !Array.isArray(val) &&
+            val !== null;
+
+        let outputArray = []
+
+        function recursiveTraverse(obj, param) {
+
+            Object.entries(obj).map(([key, value]) => {
+                if (key === param) {
+                    outputArray.push(value);
+                }
+                if (Array.isArray(value)) {
+                    value.forEach(vl => {
+                        if (isObject(vl)) {
+                            recursiveTraverse(vl, param)
+                        }
+                    })
+
+                } else {
+                    if (isObject(value)) {
+                        recursiveTraverse(value, param)
+                    }
+                }
+            })
+
+        }
+
+        const inputObj = {
+            Key: "1",
+            Arr: [{
+                Xyz: 3,
+                Key: "2"
+            },
+            {
+                Abc: 4,
+                Key: "14"
+            }
+            ],
+            alpha: {
+                xy: 12,
+                Key: "5"
+            }
+        }
+
+        recursiveTraverse(inputObj, "Key")
+        console.log("output 4: ", outputArray)
+        document.getElementById("output4").innerHTML = JSON.stringify(outputArray);
+    </script>
+
+</body>
+
+</html>
